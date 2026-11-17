@@ -1,0 +1,324 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Page 2</title>
+<style>
+  @page { size: 297mm 210mm; margin: 0; }
+  * { box-sizing: border-box; }
+  :root {
+    --ink:#17181A; --ink2:#5B5F66; --muted:#8E8B84; --faint:#ABA79E;
+    --hair:#E3E0D8; --hair2:#EDEAE3; --paper:#FFFFFF; --wash:#F6F5F2;
+  }
+  html, body { margin:0; padding:0; }
+  body {
+    font-family:"Segoe UI", "Inter", system-ui, -apple-system, sans-serif;
+    color:var(--ink); background:#E9E7E1;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+    font-variant-numeric: tabular-nums;
+    display:flex; flex-direction:column; align-items:center; gap:22px; padding:22px 0;
+  }
+  .page {
+    position:relative; width:1123px; height:794px; background:var(--paper); overflow:hidden;
+    box-shadow:0 6px 20px rgba(23,24,26,.12); page-break-after:always; break-after:page;
+  }
+  .page:last-child { page-break-after:auto; break-after:auto; }
+  @media print {
+    body { background:#fff; gap:0; padding:0; display:block; }
+    .page { box-shadow:none; }
+  }
+
+  /* ---------- header ---------- */
+  .p-head { position:absolute; left:34px; right:34px; top:24px; height:68px; }
+  .eyebrow { font-size:7px; letter-spacing:2.2px; text-transform:uppercase; color:var(--muted); }
+  .p-head h1 {
+    font-family: Georgia, "Times New Roman", serif; font-weight:400; font-size:25px;
+    letter-spacing:-.3px; margin:7px 0 0; line-height:1.05;
+  }
+  .p-head .meta { font-size:7.8px; color:var(--ink2); margin-top:7px; letter-spacing:.05px; }
+  .pmark { position:absolute; right:0; top:1px; font-family: Georgia, serif; font-size:16px; color:var(--ink); }
+  .pmark span { color:#C4C0B6; font-size:11px; }
+  .ver { position:absolute; right:0; top:25px; font-size:6.6px; letter-spacing:1.5px; text-transform:uppercase; color:var(--faint); }
+  .page::after { content:""; position:absolute; left:34px; right:34px; top:94px; height:1px; background:var(--hair); }
+
+  /* ---------- connectors ---------- */
+  svg.links { position:absolute; inset:0; z-index:0; }
+
+  /* ---------- nodes ---------- */
+  .node {
+    position:absolute; z-index:1; background:#fff; border:1px solid var(--hair); border-radius:2px;
+    padding:8px 10px;
+  }
+  .node-top { display:flex; justify-content:space-between; align-items:baseline; gap:6px; }
+  .num { font-family: ui-monospace, Consolas, monospace; font-size:6.4px; letter-spacing:.6px; color:var(--faint); }
+  .num.light { color:rgba(255,255,255,.4); }
+  .url { font-family: ui-monospace, Consolas, "Courier New", monospace; font-size:7px; color:var(--faint); white-space:nowrap; letter-spacing:-.1px; }
+  .url.light { color:rgba(255,255,255,.45); }
+  .node-title { font-size:14px; font-weight:600; letter-spacing:-.25px; margin-top:4px; line-height:1.1; }
+  .node-title.lg { font-size:17px; }
+  .node-sub { font-size:7.4px; line-height:1.35; color:var(--ink2); margin-top:4px; }
+  .node-sub.light { color:rgba(255,255,255,.66); }
+
+  .node.home { background:#17181A; border-color:#17181A; color:#FAFAF8; padding:11px 12px; }
+  .node.home .node-title { color:#fff; }
+  .home-rule { height:1px; background:rgba(255,255,255,.14); margin:9px 0 4px; }
+  .home-sec {
+    display:flex; align-items:center; gap:6px; font-size:7.4px; color:rgba(255,255,255,.76);
+    padding:4.5px 0; border-bottom:1px solid rgba(255,255,255,.07); line-height:1.2;
+  }
+  .home-sec:last-child { border-bottom:0; }
+  .home-sec .dash { width:6px; height:1px; background:rgba(255,255,255,.35); flex:0 0 6px; }
+  .home-sec .a { margin-left:auto; font-family: ui-monospace, Consolas, monospace; font-size:6.4px; color:rgba(255,255,255,.36); }
+
+  .node.leaf { padding:7px 9px; }
+  .leaf-top { display:flex; align-items:baseline; gap:6px; }
+  .leaf-title { font-size:9.2px; font-weight:600; letter-spacing:-.05px; line-height:1.2; }
+  .leaf-top .url { margin-left:auto; }
+  .leaf-sub { font-size:7.2px; color:var(--ink2); line-height:1.3; margin-top:3px; }
+  .leaf-extra { font-size:6.8px; color:var(--faint); margin-top:2px; line-height:1.3; }
+  .node.anchor { background:#FCFBF9; border-color:var(--hair2); }
+  .mono { font-family: ui-monospace, Consolas, monospace; font-size:.95em; }
+
+  .node.project .leaf-title { font-size:9.6px; }
+  .filterline { font-size:7px; color:var(--ink2); margin-top:5px; letter-spacing:.1px; }
+
+  /* case-study template rows: rules only, no boxes */
+  .srow {
+    position:absolute; z-index:1; display:flex; align-items:center; gap:8px;
+    border-top:1px solid var(--hair); padding-top:8px;
+  }
+  .srow .idx { font-family: ui-monospace, Consolas, monospace; font-size:6.4px; color:var(--faint); }
+  .srow-title { font-size:9px; color:var(--ink); letter-spacing:-.05px; }
+  .srow .url { margin-left:auto; }
+  .c4-caption {
+    position:absolute; left:722px; top:288px; z-index:2; font-size:6.2px; letter-spacing:1.6px;
+    text-transform:uppercase; color:var(--faint);
+  }
+
+  .badge { font-family: ui-monospace, Consolas, monospace; font-size:6.2px; letter-spacing:.8px; color:var(--muted); margin-left:6px; }
+
+  /* ---------- global band + legend ---------- */
+  .band {
+    position:absolute; left:34px; right:57px; top:712px; height:28px; z-index:1;
+    display:flex; align-items:center; gap:0; padding:0; border-top:1px solid var(--hair);
+  }
+  .band-label { display:flex; flex-direction:column; line-height:1.2; }
+  .band-label { font-size:6.6px; letter-spacing:1.7px; text-transform:uppercase; color:var(--ink); }
+  .band-label span { font-size:6.4px; letter-spacing:0; text-transform:none; color:var(--faint); }
+  .band-links { display:flex; align-items:center; gap:7px; margin-left:auto; font-size:6.7px; color:var(--muted); }
+  .band-links .sep { color:#D5D2C9; }
+
+  .legend {
+    position:absolute; left:34px; right:57px; top:750px; height:38px; z-index:1;
+    display:flex; align-items:center; gap:26px; border-top:1px solid var(--hair); padding-top:10px;
+  }
+  .lg { display:flex; align-items:center; gap:7px; font-size:6.9px; color:var(--muted); letter-spacing:.1px; }
+  .lg .sw { display:flex; align-items:center; }
+  .l-fill-dark { display:inline-block; width:13px; height:7px; background:#17181A; border-radius:1px; }
+  .l-hair { display:inline-block; width:13px; height:7px; border:1px solid #C9C6BD; border-radius:1px; background:#fff; }
+  .l-rule { display:inline-block; width:13px; height:7px; border-top:1px solid #C9C6BD; }
+  .l-dash { display:inline-block; width:13px; height:7px; border-top:1px dashed #C9C6BD; }
+
+  /* ---------- page 2 ---------- */
+  table.inv {
+    position:absolute; left:34px; right:57px; top:108px; width:1032px;
+    border-collapse:collapse; table-layout:fixed;
+  }
+  table.inv th {
+    text-align:left; font-size:6.4px; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted);
+    font-weight:400; padding:0 8px 7px 8px; border-bottom:1px solid var(--ink); vertical-align:bottom;
+  }
+  table.inv td {
+    font-size:7.3px; line-height:1.4; color:#45494F; padding:7px 8px; border-bottom:1px solid var(--hair2);
+    vertical-align:top;
+  }
+  table.inv td.c-page b { font-size:8px; color:var(--ink); font-weight:600; display:block; letter-spacing:-.05px; }
+  table.inv .turl { display:block; font-family: ui-monospace, Consolas, monospace; font-size:6.9px; color:var(--faint); margin-top:2px; }
+  table.inv .c-num { width:32px; font-family: ui-monospace, Consolas, monospace; font-size:6.8px; color:var(--faint); }
+  table.inv .c-page { width:146px; }
+  table.inv .c-lvl { width:66px; }
+  table.inv .c-purp { width:190px; }
+  table.inv .c-comp { width:306px; }
+  table.inv .dim { color:#6E7278; }
+  .lv { font-size:6.1px; letter-spacing:1.3px; text-transform:uppercase; color:var(--faint); white-space:nowrap; }
+  tr.primary .lv { color:var(--ink); }
+  tr.casestudy .lv { color:#3A3D42; letter-spacing:1.3px; }
+  tr.section .lv { color:#B4B0A7; }
+  .pfoot {
+    position:absolute; left:34px; right:57px; top:706px; border-top:1px solid var(--hair); padding-top:10px;
+    font-size:7.1px; line-height:1.75; color:#6E7278;
+  }
+  .pf-label { font-size:6.3px; letter-spacing:1.4px; text-transform:uppercase; color:var(--ink); margin-right:8px; }
+
+  /* ---------- page 3 ---------- */
+  .flows { position:absolute; left:34px; right:57px; top:104px; }
+  .flow { border-top:1px solid var(--hair); padding:14px 0 15px; }
+  .flow:last-child { border-bottom:1px solid var(--hair); }
+  .flow-head { display:flex; align-items:baseline; gap:11px; }
+  .fnum { font-family: ui-monospace, Consolas, monospace; font-size:6.4px; color:var(--faint); }
+  .flow-name { font-size:9.4px; font-weight:600; letter-spacing:-.05px; }
+  .flow-goal { font-size:7.3px; color:var(--muted); }
+  .flow-chain { display:flex; align-items:baseline; gap:9px; flex-wrap:wrap; margin:9px 0 7px; }
+  .pc { display:flex; align-items:baseline; gap:6px; }
+  .pc b { font-size:7.8px; font-weight:500; color:var(--ink); }
+  .pc .purl { font-family: ui-monospace, Consolas, monospace; font-size:6.6px; color:var(--faint); }
+  .pc.act b { border-bottom:1px solid var(--ink); padding-bottom:1px; }
+  .pc.ext b { border-bottom:1px dotted #C4C0B6; padding-bottom:1px; }
+  .parrow { color:#CFCBC1; font-size:8px; }
+  .flow-note { font-size:7.3px; color:#55595F; line-height:1.5; }
+  .flow-signal { font-size:6.8px; color:var(--faint); line-height:1.4; margin-top:4px; letter-spacing:.15px; }
+
+  .cols { position:absolute; left:34px; right:57px; top:522px; display:flex; gap:44px; }
+  .col { flex:1; }
+  .col h3 {
+    font-size:6.6px; letter-spacing:1.9px; text-transform:uppercase; color:var(--ink); font-weight:400;
+    margin:0 0 9px; padding-bottom:7px; border-bottom:1px solid var(--ink);
+  }
+  .col ul { margin:0; padding:0; list-style:none; }
+  .col li { font-size:7.3px; line-height:1.55; color:#55595F; padding-left:13px; position:relative; margin-bottom:7px; }
+  .col li::before { content:""; position:absolute; left:0; top:5px; width:5px; height:1px; background:#C4C0B6; }
+  .col li b { color:var(--ink); font-weight:600; }
+  .signoff { position:absolute; left:34px; right:57px; top:748px; font-size:6.6px; color:var(--faint); letter-spacing:.2px;
+    border-top:1px solid var(--hair); padding-top:10px; }
+
+body { display:block; padding:0; background:#fff; gap:0; }
+.page { box-shadow:none; }
+</style></head><body>
+<section class="page">
+  <header class="p-head">
+    <div class="eyebrow">Inventory · page by page</div>
+    <h1>Page Specification</h1>
+    <div class="meta">Every route, its navigation level, its job, and what has to be on it — written around the three projects in github.com/JasonBuenavista.</div>
+    <div class="pmark">02 <span>/ 03</span></div>
+  </header>
+  
+<table class="inv">
+  <thead><tr>
+    <th class="c-num">#</th><th class="c-page">Page &amp; URL</th><th class="c-lvl">Level</th>
+    <th class="c-purp">Purpose</th><th class="c-comp">Key components</th><th class="c-seo">SEO / UX notes</th>
+  </tr></thead>
+  <tbody>
+  
+    <tr class="primary">
+      <td class="c-num">1</td>
+      <td class="c-page"><b>Homepage</b><span class="turl">/</span></td>
+      <td class="c-lvl"><span class="lv">Primary</span></td>
+      <td>Establish identity and value proposition; route visitors into the work.</td>
+      <td>Hero (headline, bio, CTA) · featured projects (all 3) · about/skills snapshot · contact CTA band</td>
+      <td class="dim">Positioning in &lt;h1&gt; + &lt;title&gt;; Person JSON-LD; LCP = hero</td>
+    </tr>
+    <tr class="primary">
+      <td class="c-num">2</td>
+      <td class="c-page"><b>About</b><span class="turl">/about</span></td>
+      <td class="c-lvl"><span class="lv">Primary</span></td>
+      <td>Share story, background, philosophy, credentials.</td>
+      <td>Bio · experience &amp; education timeline · skills matrix · resume download · contact CTA</td>
+      <td class="dim">&lt;title&gt; built for name searches; Person schema</td>
+    </tr>
+    <tr class="section">
+      <td class="c-num">2.1</td>
+      <td class="c-page"><b>Biography</b><span class="turl">/about#bio</span></td>
+      <td class="c-lvl"><span class="lv">Section</span></td>
+      <td>Answer who you are and how you think.</td>
+      <td>Portrait, 2–3 paragraphs, design philosophy</td>
+      <td class="dim">Included in About's crawlable HTML — no tab-only content</td>
+    </tr>
+    <tr class="section">
+      <td class="c-num">2.2</td>
+      <td class="c-page"><b>Experience</b><span class="turl">/about#experience</span></td>
+      <td class="c-lvl"><span class="lv">Section</span></td>
+      <td>Prove credibility with roles and study.</td>
+      <td>Timeline: organisation, role, dates, one outcome each</td>
+      <td class="dim">Keep dates in text, not images</td>
+    </tr>
+    <tr class="section">
+      <td class="c-num">2.3</td>
+      <td class="c-page"><b>Skills</b><span class="turl">/about#skills</span></td>
+      <td class="c-lvl"><span class="lv">Section</span></td>
+      <td>Let recruiters match you to a brief.</td>
+      <td>Matrix: HTML/CSS, JavaScript, Supabase, documentation</td>
+      <td class="dim">Text-based, not a JPEG chart</td>
+    </tr>
+    <tr class="secondary">
+      <td class="c-num">2.4</td>
+      <td class="c-page"><b>Resume</b><span class="turl">/resume.pdf</span></td>
+      <td class="c-lvl"><span class="lv">Secondary</span></td>
+      <td>Give a printable one-pager.</td>
+      <td>PDF, one page, matching the on-site facts</td>
+      <td class="dim">Unique title in metadata; link with download; HTML summary stays on-page</td>
+    </tr>
+    <tr class="primary">
+      <td class="c-num">3</td>
+      <td class="c-page"><b>Work index</b><span class="turl">/work</span></td>
+      <td class="c-lvl"><span class="lv">Primary</span></td>
+      <td>Exhibit the projects and allow quick scanning.</td>
+      <td>3 case-study cards · category filters (Web Apps, UI Studies, Coursework)</td>
+      <td class="dim">Filtered views canonicalise to /work</td>
+    </tr>
+    <tr class="case study">
+      <td class="c-num">3.1</td>
+      <td class="c-page"><b>LISplus</b><span class="turl">/work/lisplus</span></td>
+      <td class="c-lvl"><span class="lv">Case study</span></td>
+      <td>Show a full system: records, documents, roles, reports.</td>
+      <td>Lead developer / DBA in a team of 4 · JavaScript + LocalStorage · RBAC · LRN search · SF10 / SF9 / PSA document previews · printable principal reports</td>
+      <td class="dim">Live at protoype-for-li-splus.vercel.app · credit the three collaborators · state plainly that it is a prototype without a real database</td>
+    </tr>
+    <tr class="case study">
+      <td class="c-num">3.2</td>
+      <td class="c-page"><b>StudySmart</b><span class="turl">/work/studysmart</span></td>
+      <td class="c-lvl"><span class="lv">Case study</span></td>
+      <td>Show product thinking and auth/storage integration.</td>
+      <td>Supabase Auth + Storage · per-user data filtering · Pomodoro timer · PDF and image previews</td>
+      <td class="dim">Live on GitHub Pages · say isolation is client-side, not database RLS — the README is honest about it</td>
+    </tr>
+    <tr class="case study">
+      <td class="c-num">3.3</td>
+      <td class="c-page"><b>Google Clone</b><span class="turl">/work/google-clone</span></td>
+      <td class="c-lvl"><span class="lv">Case study</span></td>
+      <td>Prove UI precision: layout, type and spacing.</td>
+      <td>HTML + CSS only, no JavaScript · search-homepage replica</td>
+      <td class="dim">Label it a study, not client work; no audience or metrics to claim</td>
+    </tr>
+    <tr class="section">
+      <td class="c-num">3.x</td>
+      <td class="c-page"><b>Shared sections</b><span class="turl">/work/[slug]#overview …#next</span></td>
+      <td class="c-lvl"><span class="lv">Section</span></td>
+      <td>Keep the three projects comparable.</td>
+      <td>5 anchored sections + sticky section nav + next/previous</td>
+      <td class="dim">Every page must fill its own Results section; no boilerplate copy</td>
+    </tr>
+    <tr class="primary">
+      <td class="c-num">4</td>
+      <td class="c-page"><b>Contact</b><span class="turl">/contact</span></td>
+      <td class="c-lvl"><span class="lv">Primary</span></td>
+      <td>Make it effortless to get in touch.</td>
+      <td>Form (name, email, subject, message) · buenavistajasonjonh@gmail.com · Iloilo City, GMT+8 · github.com/JasonBuenavista</td>
+      <td class="dim">Form labels tied to inputs; success page is noindex</td>
+    </tr>
+    <tr class="secondary">
+      <td class="c-num">4.1</td>
+      <td class="c-page"><b>Form success</b><span class="turl">/contact/thanks</span></td>
+      <td class="c-lvl"><span class="lv">Secondary</span></td>
+      <td>Confirm receipt and set expectations.</td>
+      <td>Confirmation copy · reply time · link back to work</td>
+      <td class="dim">noindex, follow; excluded from sitemap.xml</td>
+    </tr>
+    <tr class="utility">
+      <td class="c-num">5</td>
+      <td class="c-page"><b>Utility</b><span class="turl">/privacy · /404</span></td>
+      <td class="c-lvl"><span class="lv">Utility</span></td>
+      <td>Trust, legal and error recovery.</td>
+      <td>Privacy note (analytics, form data) · 404 with links to Home and Work</td>
+      <td class="dim">404 returns a real 404 status</td>
+    </tr>
+    <tr class="utility">
+      <td class="c-num">6</td>
+      <td class="c-page"><b>Site files</b><span class="turl">/sitemap.xml · /robots.txt</span></td>
+      <td class="c-lvl"><span class="lv">Utility</span></td>
+      <td>Make the structure machine-readable.</td>
+      <td>XML sitemap generated from this page list</td>
+      <td class="dim">Resubmit in Search Console after slug changes</td>
+    </tr>
+  </tbody>
+</table>
+  <div class="pfoot">
+    <div><span class="pf-label">Footer, every page</span>About · Work · Contact · Resume (PDF) · Privacy · Email &nbsp;—&nbsp; GitHub · LinkedIn · Behance · Dribbble</div>
+    <div><span class="pf-label">Header</span>Logo → / &nbsp;·&nbsp; Home &nbsp;·&nbsp; About &nbsp;·&nbsp; Work &nbsp;·&nbsp; Contact &nbsp;—&nbsp; current page marked with <span class="mono">aria-current="page"</span></div>
+  </div>
+</section></body></html>

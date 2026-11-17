@@ -1,0 +1,347 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Page 1</title>
+<style>
+  @page { size: 297mm 210mm; margin: 0; }
+  * { box-sizing: border-box; }
+  :root {
+    --ink:#17181A; --ink2:#5B5F66; --muted:#8E8B84; --faint:#ABA79E;
+    --hair:#E3E0D8; --hair2:#EDEAE3; --paper:#FFFFFF; --wash:#F6F5F2;
+  }
+  html, body { margin:0; padding:0; }
+  body {
+    font-family:"Segoe UI", "Inter", system-ui, -apple-system, sans-serif;
+    color:var(--ink); background:#E9E7E1;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+    font-variant-numeric: tabular-nums;
+    display:flex; flex-direction:column; align-items:center; gap:22px; padding:22px 0;
+  }
+  .page {
+    position:relative; width:1123px; height:794px; background:var(--paper); overflow:hidden;
+    box-shadow:0 6px 20px rgba(23,24,26,.12); page-break-after:always; break-after:page;
+  }
+  .page:last-child { page-break-after:auto; break-after:auto; }
+  @media print {
+    body { background:#fff; gap:0; padding:0; display:block; }
+    .page { box-shadow:none; }
+  }
+
+  /* ---------- header ---------- */
+  .p-head { position:absolute; left:34px; right:34px; top:24px; height:68px; }
+  .eyebrow { font-size:7px; letter-spacing:2.2px; text-transform:uppercase; color:var(--muted); }
+  .p-head h1 {
+    font-family: Georgia, "Times New Roman", serif; font-weight:400; font-size:25px;
+    letter-spacing:-.3px; margin:7px 0 0; line-height:1.05;
+  }
+  .p-head .meta { font-size:7.8px; color:var(--ink2); margin-top:7px; letter-spacing:.05px; }
+  .pmark { position:absolute; right:0; top:1px; font-family: Georgia, serif; font-size:16px; color:var(--ink); }
+  .pmark span { color:#C4C0B6; font-size:11px; }
+  .ver { position:absolute; right:0; top:25px; font-size:6.6px; letter-spacing:1.5px; text-transform:uppercase; color:var(--faint); }
+  .page::after { content:""; position:absolute; left:34px; right:34px; top:94px; height:1px; background:var(--hair); }
+
+  /* ---------- connectors ---------- */
+  svg.links { position:absolute; inset:0; z-index:0; }
+
+  /* ---------- nodes ---------- */
+  .node {
+    position:absolute; z-index:1; background:#fff; border:1px solid var(--hair); border-radius:2px;
+    padding:8px 10px;
+  }
+  .node-top { display:flex; justify-content:space-between; align-items:baseline; gap:6px; }
+  .num { font-family: ui-monospace, Consolas, monospace; font-size:6.4px; letter-spacing:.6px; color:var(--faint); }
+  .num.light { color:rgba(255,255,255,.4); }
+  .url { font-family: ui-monospace, Consolas, "Courier New", monospace; font-size:7px; color:var(--faint); white-space:nowrap; letter-spacing:-.1px; }
+  .url.light { color:rgba(255,255,255,.45); }
+  .node-title { font-size:14px; font-weight:600; letter-spacing:-.25px; margin-top:4px; line-height:1.1; }
+  .node-title.lg { font-size:17px; }
+  .node-sub { font-size:7.4px; line-height:1.35; color:var(--ink2); margin-top:4px; }
+  .node-sub.light { color:rgba(255,255,255,.66); }
+
+  .node.home { background:#17181A; border-color:#17181A; color:#FAFAF8; padding:11px 12px; }
+  .node.home .node-title { color:#fff; }
+  .home-rule { height:1px; background:rgba(255,255,255,.14); margin:9px 0 4px; }
+  .home-sec {
+    display:flex; align-items:center; gap:6px; font-size:7.4px; color:rgba(255,255,255,.76);
+    padding:4.5px 0; border-bottom:1px solid rgba(255,255,255,.07); line-height:1.2;
+  }
+  .home-sec:last-child { border-bottom:0; }
+  .home-sec .dash { width:6px; height:1px; background:rgba(255,255,255,.35); flex:0 0 6px; }
+  .home-sec .a { margin-left:auto; font-family: ui-monospace, Consolas, monospace; font-size:6.4px; color:rgba(255,255,255,.36); }
+
+  .node.leaf { padding:7px 9px; }
+  .leaf-top { display:flex; align-items:baseline; gap:6px; }
+  .leaf-title { font-size:9.2px; font-weight:600; letter-spacing:-.05px; line-height:1.2; }
+  .leaf-top .url { margin-left:auto; }
+  .leaf-sub { font-size:7.2px; color:var(--ink2); line-height:1.3; margin-top:3px; }
+  .leaf-extra { font-size:6.8px; color:var(--faint); margin-top:2px; line-height:1.3; }
+  .node.anchor { background:#FCFBF9; border-color:var(--hair2); }
+  .mono { font-family: ui-monospace, Consolas, monospace; font-size:.95em; }
+
+  .node.project .leaf-title { font-size:9.6px; }
+  .filterline { font-size:7px; color:var(--ink2); margin-top:5px; letter-spacing:.1px; }
+
+  /* case-study template rows: rules only, no boxes */
+  .srow {
+    position:absolute; z-index:1; display:flex; align-items:center; gap:8px;
+    border-top:1px solid var(--hair); padding-top:8px;
+  }
+  .srow .idx { font-family: ui-monospace, Consolas, monospace; font-size:6.4px; color:var(--faint); }
+  .srow-title { font-size:9px; color:var(--ink); letter-spacing:-.05px; }
+  .srow .url { margin-left:auto; }
+  .c4-caption {
+    position:absolute; left:722px; top:288px; z-index:2; font-size:6.2px; letter-spacing:1.6px;
+    text-transform:uppercase; color:var(--faint);
+  }
+
+  .badge { font-family: ui-monospace, Consolas, monospace; font-size:6.2px; letter-spacing:.8px; color:var(--muted); margin-left:6px; }
+
+  /* ---------- global band + legend ---------- */
+  .band {
+    position:absolute; left:34px; right:57px; top:712px; height:28px; z-index:1;
+    display:flex; align-items:center; gap:0; padding:0; border-top:1px solid var(--hair);
+  }
+  .band-label { display:flex; flex-direction:column; line-height:1.2; }
+  .band-label { font-size:6.6px; letter-spacing:1.7px; text-transform:uppercase; color:var(--ink); }
+  .band-label span { font-size:6.4px; letter-spacing:0; text-transform:none; color:var(--faint); }
+  .band-links { display:flex; align-items:center; gap:7px; margin-left:auto; font-size:6.7px; color:var(--muted); }
+  .band-links .sep { color:#D5D2C9; }
+
+  .legend {
+    position:absolute; left:34px; right:57px; top:750px; height:38px; z-index:1;
+    display:flex; align-items:center; gap:26px; border-top:1px solid var(--hair); padding-top:10px;
+  }
+  .lg { display:flex; align-items:center; gap:7px; font-size:6.9px; color:var(--muted); letter-spacing:.1px; }
+  .lg .sw { display:flex; align-items:center; }
+  .l-fill-dark { display:inline-block; width:13px; height:7px; background:#17181A; border-radius:1px; }
+  .l-hair { display:inline-block; width:13px; height:7px; border:1px solid #C9C6BD; border-radius:1px; background:#fff; }
+  .l-rule { display:inline-block; width:13px; height:7px; border-top:1px solid #C9C6BD; }
+  .l-dash { display:inline-block; width:13px; height:7px; border-top:1px dashed #C9C6BD; }
+
+  /* ---------- page 2 ---------- */
+  table.inv {
+    position:absolute; left:34px; right:57px; top:108px; width:1032px;
+    border-collapse:collapse; table-layout:fixed;
+  }
+  table.inv th {
+    text-align:left; font-size:6.4px; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted);
+    font-weight:400; padding:0 8px 7px 8px; border-bottom:1px solid var(--ink); vertical-align:bottom;
+  }
+  table.inv td {
+    font-size:7.3px; line-height:1.4; color:#45494F; padding:7px 8px; border-bottom:1px solid var(--hair2);
+    vertical-align:top;
+  }
+  table.inv td.c-page b { font-size:8px; color:var(--ink); font-weight:600; display:block; letter-spacing:-.05px; }
+  table.inv .turl { display:block; font-family: ui-monospace, Consolas, monospace; font-size:6.9px; color:var(--faint); margin-top:2px; }
+  table.inv .c-num { width:32px; font-family: ui-monospace, Consolas, monospace; font-size:6.8px; color:var(--faint); }
+  table.inv .c-page { width:146px; }
+  table.inv .c-lvl { width:66px; }
+  table.inv .c-purp { width:190px; }
+  table.inv .c-comp { width:306px; }
+  table.inv .dim { color:#6E7278; }
+  .lv { font-size:6.1px; letter-spacing:1.3px; text-transform:uppercase; color:var(--faint); white-space:nowrap; }
+  tr.primary .lv { color:var(--ink); }
+  tr.casestudy .lv { color:#3A3D42; letter-spacing:1.3px; }
+  tr.section .lv { color:#B4B0A7; }
+  .pfoot {
+    position:absolute; left:34px; right:57px; top:706px; border-top:1px solid var(--hair); padding-top:10px;
+    font-size:7.1px; line-height:1.75; color:#6E7278;
+  }
+  .pf-label { font-size:6.3px; letter-spacing:1.4px; text-transform:uppercase; color:var(--ink); margin-right:8px; }
+
+  /* ---------- page 3 ---------- */
+  .flows { position:absolute; left:34px; right:57px; top:104px; }
+  .flow { border-top:1px solid var(--hair); padding:14px 0 15px; }
+  .flow:last-child { border-bottom:1px solid var(--hair); }
+  .flow-head { display:flex; align-items:baseline; gap:11px; }
+  .fnum { font-family: ui-monospace, Consolas, monospace; font-size:6.4px; color:var(--faint); }
+  .flow-name { font-size:9.4px; font-weight:600; letter-spacing:-.05px; }
+  .flow-goal { font-size:7.3px; color:var(--muted); }
+  .flow-chain { display:flex; align-items:baseline; gap:9px; flex-wrap:wrap; margin:9px 0 7px; }
+  .pc { display:flex; align-items:baseline; gap:6px; }
+  .pc b { font-size:7.8px; font-weight:500; color:var(--ink); }
+  .pc .purl { font-family: ui-monospace, Consolas, monospace; font-size:6.6px; color:var(--faint); }
+  .pc.act b { border-bottom:1px solid var(--ink); padding-bottom:1px; }
+  .pc.ext b { border-bottom:1px dotted #C4C0B6; padding-bottom:1px; }
+  .parrow { color:#CFCBC1; font-size:8px; }
+  .flow-note { font-size:7.3px; color:#55595F; line-height:1.5; }
+  .flow-signal { font-size:6.8px; color:var(--faint); line-height:1.4; margin-top:4px; letter-spacing:.15px; }
+
+  .cols { position:absolute; left:34px; right:57px; top:522px; display:flex; gap:44px; }
+  .col { flex:1; }
+  .col h3 {
+    font-size:6.6px; letter-spacing:1.9px; text-transform:uppercase; color:var(--ink); font-weight:400;
+    margin:0 0 9px; padding-bottom:7px; border-bottom:1px solid var(--ink);
+  }
+  .col ul { margin:0; padding:0; list-style:none; }
+  .col li { font-size:7.3px; line-height:1.55; color:#55595F; padding-left:13px; position:relative; margin-bottom:7px; }
+  .col li::before { content:""; position:absolute; left:0; top:5px; width:5px; height:1px; background:#C4C0B6; }
+  .col li b { color:var(--ink); font-weight:600; }
+  .signoff { position:absolute; left:34px; right:57px; top:748px; font-size:6.6px; color:var(--faint); letter-spacing:.2px;
+    border-top:1px solid var(--hair); padding-top:10px; }
+
+body { display:block; padding:0; background:#fff; gap:0; }
+.page { box-shadow:none; }
+</style></head><body>
+<section class="page">
+  <header class="p-head">
+    <div class="eyebrow">Portfolio architecture · site map</div>
+    <h1>Digital Portfolio — Site Map</h1>
+    <div class="meta">Primary navigation: Home · About · Work · Contact &nbsp;&nbsp;4 primary pages · 3 case studies · 1 shared case-study template · 15 in-page sections</div>
+    <div class="pmark">01 <span>/ 03</span></div>
+    <div class="ver">v1.2 · Nov 2026</div>
+  </header>
+
+  <svg class="links" width="1123" height="794" viewBox="0 0 1123 794" aria-hidden="true"><path d="M230 420 H245 M245 192 V630 M245 192 H260 M245 415 H260 M245 630 H260" fill="none" stroke="#C9C6BD" stroke-width="1" stroke-linecap="round"/><path d="M450 192 C466 192 466 120 482 120" fill="none" stroke="#C9C6BD" stroke-width="1" stroke-dasharray="2 3" stroke-linecap="round"/><path d="M450 192 C466 192 466 168 482 168" fill="none" stroke="#C9C6BD" stroke-width="1" stroke-dasharray="2 3" stroke-linecap="round"/><path d="M450 192 C466 192 466 216 482 216" fill="none" stroke="#C9C6BD" stroke-width="1" stroke-dasharray="2 3" stroke-linecap="round"/><path d="M450 192 C466 192 466 264 482 264" fill="none" stroke="#C9C6BD" stroke-width="1"  stroke-linecap="round"/><path d="M450 415 H466 M466 342 V524 M466 342 H482 M466 416 H482 M466 470 H482 M466 524 H482" fill="none" stroke="#C9C6BD" stroke-width="1" stroke-linecap="round"/><path d="M706 302 V528 M706 321 H722 M706 368 H722 M706 415 H722 M706 462 H722 M706 509 H722" fill="none" stroke="#D3D0C7" stroke-width="1" stroke-dasharray="2 3" stroke-linecap="round"/><path d="M450 630 C466 630 466 572 482 572" fill="none" stroke="#C9C6BD" stroke-width="1"  stroke-linecap="round"/><path d="M450 630 C466 630 466 626 482 626" fill="none" stroke="#C9C6BD" stroke-width="1"  stroke-linecap="round"/><path d="M450 630 C466 630 466 678 482 678" fill="none" stroke="#C9C6BD" stroke-width="1"  stroke-linecap="round"/></svg>
+
+  <!-- homepage -->
+  <div class="node home" style="left:34px;top:332px;width:196px;height:176px">
+    <div class="node-top"><span class="num light">01</span><span class="url light">/</span></div>
+    <div class="node-title lg">Homepage</div>
+    <div class="node-sub light">Identity, value proposition, route into the work</div>
+    <div class="home-rule"></div>
+    <div class="home-sec"><span class="dash"></span>Hero — headline, bio, primary CTA<span class="a">#hero</span></div>
+    <div class="home-sec"><span class="dash"></span>Featured projects → case studies<span class="a">#featured</span></div>
+    <div class="home-sec"><span class="dash"></span>About &amp; skills snapshot<span class="a">#about-preview</span></div>
+    <div class="home-sec"><span class="dash"></span>Contact CTA band<span class="a">#contact-cta</span></div>
+  </div>
+
+  
+<div class="node primary" style="left:260px;top:161px;width:190px;height:62px">
+  <div class="node-top"><span class="num">02</span><span class="url">/about</span></div>
+  <div class="node-title">About</div>
+  <div class="node-sub">Story, background, credentials</div>
+</div>
+  
+<div class="node primary" style="left:260px;top:384px;width:190px;height:62px">
+  <div class="node-top"><span class="num">03</span><span class="url">/work</span></div>
+  <div class="node-title">Work</div>
+  <div class="node-sub">3 projects · 1 shared template</div>
+</div>
+  
+<div class="node primary" style="left:260px;top:599px;width:190px;height:62px">
+  <div class="node-top"><span class="num">04</span><span class="url">/contact</span></div>
+  <div class="node-title">Contact</div>
+  <div class="node-sub">Turn interest into a conversation</div>
+</div>
+
+  
+<div class="node leaf anchor" style="left:482px;top:100px;width:208px;height:40px">
+  <div class="leaf-top">
+    <span class="leaf-title">Biography &amp; Background</span>
+    <span class="url">#bio</span>
+    
+  </div>
+  <div class="leaf-sub">Story, motivation, design philosophy</div>
+  
+</div>
+<div class="node leaf anchor" style="left:482px;top:148px;width:208px;height:40px">
+  <div class="leaf-top">
+    <span class="leaf-title">Experience &amp; Education</span>
+    <span class="url">#experience</span>
+    
+  </div>
+  <div class="leaf-sub">Roles and study, newest first</div>
+  
+</div>
+<div class="node leaf anchor" style="left:482px;top:196px;width:208px;height:40px">
+  <div class="leaf-top">
+    <span class="leaf-title">Skills &amp; Tools</span>
+    <span class="url">#skills</span>
+    
+  </div>
+  <div class="leaf-sub">Capability matrix: design, code, tools</div>
+  
+</div>
+<div class="node leaf" style="left:482px;top:243px;width:208px;height:42px">
+  <div class="leaf-top">
+    <span class="leaf-title">Resume</span>
+    <span class="url">/resume.pdf</span>
+    <span class="badge">PDF</span>
+  </div>
+  <div class="leaf-sub">Downloadable PDF, opens in new tab</div>
+  
+</div>
+
+  <!-- work: index + filters -->
+  <div class="node leaf filters" style="left:482px;top:300px;width:208px;height:84px">
+    <div class="leaf-top"><span class="leaf-title">Work Index</span><span class="url">/work</span></div>
+    <div class="filterline">All &nbsp;·&nbsp; Web Apps &nbsp;·&nbsp; UI Studies &nbsp;·&nbsp; Coursework</div>
+    <div class="leaf-extra">filters resolve to <span class="mono">/work?filter=web-apps</span></div>
+    <div class="leaf-extra">three project cards, newest first</div>
+  </div>
+
+  
+<div class="node project" style="left:482px;top:392px;width:208px;height:48px">
+  <div class="leaf-top"><span class="leaf-title">LISplus</span><span class="url">/work/lisplus</span></div>
+  <div class="leaf-sub">K-12 student records · JavaScript · team of 4</div>
+</div>
+<div class="node project" style="left:482px;top:446px;width:208px;height:48px">
+  <div class="leaf-top"><span class="leaf-title">StudySmart</span><span class="url">/work/studysmart</span></div>
+  <div class="leaf-sub">Tasks, files, Pomodoro · Supabase</div>
+</div>
+<div class="node project" style="left:482px;top:500px;width:208px;height:48px">
+  <div class="leaf-top"><span class="leaf-title">Google Clone</span><span class="url">/work/google-clone</span></div>
+  <div class="leaf-sub">Static HTML + CSS · interface study</div>
+</div>
+
+  <div class="c4-caption">Shared case-study template — all three project pages</div>
+  
+  <div class="srow" style="left:722px;top:302px;width:344px;height:38px">
+    <span class="idx">01</span><span class="srow-title">Overview &amp; problem statement</span><span class="url">#overview</span>
+  </div>
+  <div class="srow" style="left:722px;top:349px;width:344px;height:38px">
+    <span class="idx">02</span><span class="srow-title">Role, timeline &amp; tools used</span><span class="url">#role</span>
+  </div>
+  <div class="srow" style="left:722px;top:396px;width:344px;height:38px">
+    <span class="idx">03</span><span class="srow-title">Process, wireframes, code</span><span class="url">#process</span>
+  </div>
+  <div class="srow" style="left:722px;top:443px;width:344px;height:38px">
+    <span class="idx">04</span><span class="srow-title">Results, deliverables, metrics</span><span class="url">#results</span>
+  </div>
+  <div class="srow" style="left:722px;top:490px;width:344px;height:38px">
+    <span class="idx">05</span><span class="srow-title">Next / previous project</span><span class="url">#next</span>
+  </div>
+
+  
+<div class="node leaf" style="left:482px;top:546px;width:208px;height:52px">
+  <div class="leaf-top">
+    <span class="leaf-title">Contact Form</span>
+    <span class="url">#form</span>
+  </div>
+  <div class="leaf-sub">Name · Email · Subject · Message</div>
+  <div class="leaf-extra">on submit → /contact/thanks</div>
+</div>
+<div class="node leaf" style="left:482px;top:602px;width:208px;height:48px">
+  <div class="leaf-top">
+    <span class="leaf-title">Direct Contact</span>
+    <span class="url">#direct</span>
+  </div>
+  <div class="leaf-sub"><span class="mono">buenavistajasonjonh@gmail.com</span></div>
+  <div class="leaf-extra">Iloilo City, Philippines · GMT+8</div>
+</div>
+<div class="node leaf" style="left:482px;top:654px;width:208px;height:48px">
+  <div class="leaf-top">
+    <span class="leaf-title">Social &amp; Professional</span>
+    <span class="url">#social</span>
+  </div>
+  <div class="leaf-sub"><span class="mono">github.com/JasonBuenavista</span></div>
+  <div class="leaf-extra">LinkedIn · Behance · Dribbble — add when live</div>
+</div>
+
+  <!-- global / utility layer -->
+  <div class="band">
+    <div class="band-label">Global layer<span>linked from the footer on every page</span></div>
+    <div class="band-links">
+      <span class="mono">/privacy</span><span class="sep">·</span>
+      <span class="mono">/404</span><span class="sep">·</span>
+      <span class="mono">/sitemap.xml</span><span class="sep">·</span>
+      <span class="mono">/robots.txt</span><span class="sep">·</span>
+      <span>LinkedIn · GitHub · Behance · Dribbble</span>
+    </div>
+  </div>
+
+  <div class="legend">
+    <span class="lg"><span class="sw"><span class="l-fill-dark"></span></span>Primary page — header nav</span>
+    <span class="lg"><span class="sw"><span class="l-hair"></span></span>Case study — nested route</span>
+    <span class="lg"><span class="sw"><span class="l-rule"></span></span>In-page section — anchor</span>
+    <span class="lg"><span class="sw"><span class="l-dash"></span></span>Utility — footer, legal, SEO files</span>
+  </div>
+</section></body></html>
